@@ -1,4 +1,4 @@
-in this prooject we have added jenkins file and docker file
+in this project we have added jenkins file and docker file
 written shell scripts
 the final layout of the project should be
 currency-conversion-devops/
