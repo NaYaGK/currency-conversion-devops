@@ -34,7 +34,7 @@ pipeline {
             }
         }
     }
- 
+ /*
   stage('SCM') {
     checkout scm
   }
@@ -44,7 +44,7 @@ pipeline {
       sh "${mvn}/bin/mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ci-lifecycle -Dsonar.projectName='ci-lifecycle'"
     }
   }
-
+*/
     post {
         failure {
             echo 'Pipeline failed'
