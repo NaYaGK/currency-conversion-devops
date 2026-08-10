@@ -33,7 +33,7 @@ pipeline {
                 }
             }
         }
-    }
+    
  
  /* stage('SCM') {
     checkout scm
@@ -53,4 +53,5 @@ pipeline {
             echo 'Pipeline succeeded'
         }
     }
+}
 }
