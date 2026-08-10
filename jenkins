@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     // DELETE the tools block entirely..
-
     stages {
         stage('Checkout') {
             steps {
