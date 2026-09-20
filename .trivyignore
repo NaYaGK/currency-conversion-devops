@@ -1,0 +1,17 @@
+# Tomcat - fix version 10.1.58 not yet in Maven Central
+CVE-2026-65182
+CVE-2026-65905
+CVE-2026-68525
+
+# XStream - transitive via Eureka client
+CVE-2024-47072
+
+# Commons FileUpload - transitive via Eureka client
+CVE-2025-48976
+
+# HttpCore5 - fix version incompatible with Spring Cloud 2025.0.0
+CVE-2026-54399
+CVE-2026-54428
+
+# Jackson-databind - fix version not compatible with current BOM
+CVE-2026-54513
