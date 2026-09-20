@@ -14,7 +14,8 @@
     <name>currency-conversion</name>
     <description>currency-conversion</description>
     <properties>
-        <java.version>17</java.version>
+       <properties>
+    <java.version>17</java.version>
     <spring-cloud.version>2025.0.0</spring-cloud.version>
     <spring-framework.version>6.2.19</spring-framework.version>
     <lombok.version>1.18.30</lombok.version>
@@ -22,6 +23,8 @@
     <xstream.version>1.4.21</xstream.version>
     <commons-fileupload.version>1.6.0</commons-fileupload.version>
     <jackson-bom.version>2.21.4</jackson-bom.version>
+    <micrometer.version>1.15.12</micrometer.version>
+</properties>
     </properties>
     <dependencies>
         <!-- Force secure version of BouncyCastle -->
