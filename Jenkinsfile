@@ -36,6 +36,7 @@ pipeline {
         }
         stage('sonar scan') {
             steps {
+                timeout(time: 1, unit: 'MINUTES')
                 withSonarQubeEnv('sonar') {
                     sh 'mvn sonar:sonar'
                 }
@@ -43,6 +44,7 @@ pipeline {
         }
         stage('quality gate') {
             steps {
+                timeout(time: 1, unit: 'MINUTES')
                 script {
                     def check = waitForQualityGate()
                     if (check.status != 'OK')
