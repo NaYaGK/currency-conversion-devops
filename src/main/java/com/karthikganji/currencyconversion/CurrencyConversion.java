@@ -1,4 +1,4 @@
-package com.vamshi.currencyconversion;
+package com.karthikganji.currencyconversion;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

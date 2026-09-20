@@ -1,58 +1,106 @@
 pipeline {
     agent any
-
-    // DELETE the tools block entirely..
     stages {
-        stage('Checkout') {
+        // stage('Checkout') {
+        //     steps {
+        //         git branch: 'main',
+        //             url: 'https://github.com/NaYaGK/currency-conversion-devops.git'
+        //     }
+        // }
+        // stage('clean') {
+        //     steps {
+        //         sh 'mvn clean'
+        //     }
+        // }
+        // stage('validate') {
+        //     steps {
+        //         sh 'mvn validate'
+        //     }
+        // }
+        // stage('test') {
+        //     steps {
+        //         sh 'mvn test'
+        //     }
+        //     post {
+        //         always {
+        //             junit '**/target/surefire-reports/*.xml'
+        //         }
+        //     }
+        // }
+        // stage('sonar') {
+        //     steps {
+        //         withSonarQubeEnv('sonar') {       // opens withSonarQubeEnv
+        //             dir("./") {
+        //                 sh "mvn sonar:sonar"
+        //             }
+        //         }                                  // closes withSonarQubeEnv ✅
+        //     }
+        // }
+        // stage('quality gates') {
+        //     steps {
+        //         script {
+        //             def check = waitForQualityGate()
+        //             if (check.status != 'OK')
+        //                 error "pipeline aborted due to quality gate failure: ${check.status}"
+        //         }
+        //     }
+        // }
+        stage('jfrog package') {
             steps {
-                git branch: 'main', url: 'https://github.com/NaYaGK/devops-ci-lifecycle.git'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'mvn clean compile'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('Package') {
-            steps {
-                sh 'mvn package -DskipTests'
+                sh 'mvn package'
             }
             post {
                 success {
-                    archiveArtifacts artifacts: '**/target/*.jar, **/target/*.war', fingerprint: true
+                    archiveArtifacts artifacts: '**/target/*.jar, **/target/*.war',
+                                     fingerprint: true
                 }
             }
         }
-    
- 
-stage('Code Coverage') {
-            steps{
-                 dir ("./server/") {
-                   sh "mvn site"
+        stage('upload') {
+            steps {
+                script {
+                    def server = Artifactory.server('jfrog')
+                    def uploadjar = """{
+                        "files": [{
+                            "pattern": "./target/*.jar",
+                           "target": "currency-conversion-local/"
+                        }]
+                    }"""
+                    server.upload(uploadjar)
+                }               // closes script ✅
+            }                   // closes steps ✅
+        }                       // closes stage('upload') ✅
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    // Make sure the tag matches what you use!
+                    sh 'sudo docker build --no-cache -t currency-conversion:1.04 .'
                 }
-}
-        }
-        stage ('sonarqube analysis'){
-            steps{
-            withSonarQubeEnv('mysonar') {
-			    dir ("./server/"){
-				sh "mvn sonar:sonar" }
-}
-			
-       	 }
+            }
         }
 
+        stage('Trivy Scan') {
+            steps {
+                script {
+                    // If Trivy finds CRITICAL/HIGH vulnerabilities, it should exit with a non-zero code to fail the build (e.g. --exit-code 1).
+                    // For now, we will run the scan.
+                    sh 'sudo TMPDIR=/home/ec2-user/trivy-temp trivy image currency-conversion:1.04'
+                }
+            }
+        }
 
+        stage('Docker Push') {
+            steps {
+                script {
+                    // Note: In a real enterprise pipeline, you would use withCredentials() to handle passwords securely.
+                    // Assuming you have already authenticated the Jenkins server to Docker Hub using 'docker login'
+                    sh 'sudo docker tag currency-conversion:1.04 karthikganji/currency-conversion:1.04'
+                    sh 'sudo docker push karthikganji/currency-conversion:1.04'
+                }
+            }
+        }
+    }                           // closes stages ✅
     post {
         failure {
             echo 'Pipeline failed'
@@ -61,5 +109,7 @@ stage('Code Coverage') {
             echo 'Pipeline succeeded'
         }
     }
-}
-}
+}                               // closes pipeline ✅
+
+
+

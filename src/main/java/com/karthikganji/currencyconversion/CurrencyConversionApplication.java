@@ -1,4 +1,4 @@
-package com.vamshi.currencyconversion;
+package com.karthikganji.currencyconversion;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

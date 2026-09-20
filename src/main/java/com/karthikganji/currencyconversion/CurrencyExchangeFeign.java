@@ -1,4 +1,4 @@
-package com.vamshi.currencyconversion;
+package com.karthikganji.currencyconversion;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
