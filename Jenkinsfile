@@ -99,13 +99,15 @@ pipeline {
                 '''
             }
         }
+        
         stage('deploy to eks') {
             steps {
                 sh '''
                     aws eks update-kubeconfig \
                     --name ${CLUSTER_NAME} \
                     --region ${REGION}
-
+                    
+                    kubectl apply -f k8s/namespace.yaml    
                     kubectl apply -f k8s/deployment.yaml -n ${NAMESPACE}
                     kubectl apply -f k8s/service.yaml -n ${NAMESPACE}
 
