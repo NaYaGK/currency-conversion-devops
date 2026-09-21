@@ -5,8 +5,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>3.5.14</version>
+        <relativePath/>
     </parent>
     <groupId>com.karthikganji</groupId>
     <artifactId>currency-conversion</artifactId>
@@ -14,20 +14,24 @@
     <name>currency-conversion</name>
     <description>currency-conversion</description>
     <properties>
-	    <java.version>17</java.version>
-	    <spring-cloud.version>2023.0.3</spring-cloud.version>
-	    <lombok.version>1.18.30</lombok.version>
-	    <tomcat.version>10.1.55</tomcat.version>
-
+        <java.version>17</java.version>
+        <spring-cloud.version>2025.0.0</spring-cloud.version>
+        <spring-framework.version>6.2.19</spring-framework.version>
+        <lombok.version>1.18.30</lombok.version>
+        <tomcat.version>10.1.55</tomcat.version>
+        <xstream.version>1.4.21</xstream.version>
+        <commons-fileupload.version>1.6.0</commons-fileupload.version>
+        <jackson-bom.version>2.21.4</jackson-bom.version>
+        <micrometer.version>1.15.12</micrometer.version>
     </properties>
     <dependencies>
-	  <!-- Force secure version of BouncyCastle -->
-            <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk18on</artifactId>
-                <version>1.84</version>
-            </dependency>   
-	 <dependency>
+        <!-- Force secure version of BouncyCastle -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.85</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
@@ -48,7 +52,7 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--        Zipkin dependencies -->
+        <!-- Zipkin dependencies -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-observation</artifactId>
@@ -65,7 +69,17 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-micrometer</artifactId>
         </dependency>
-
+        <!-- Explicit httpcore5 upgrade for CVE fixes -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
+            <version>5.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5-h2</artifactId>
+            <version>5.4.3</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -83,7 +97,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>
@@ -91,9 +104,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>
-				karthikganji/${project.artifactId}:${project.version}
-                        </name>
+                        <name>karthikganji/${project.artifactId}:${project.version}</name>
                     </image>
                     <pullPolicy>IF_NOT_PRESENT</pullPolicy>
                     <excludes>
@@ -104,11 +115,11 @@
                     </excludes>
                 </configuration>
             </plugin>
-                 <plugin>
-    <groupId>org.sonarsource.scanner.maven</groupId>
-    <artifactId>sonar-maven-plugin</artifactId>
-    <version>4.0.0.4121</version>
-</plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>4.0.0.4121</version>
+            </plugin>
         </plugins>
     </build>
     <repositories>
@@ -121,5 +132,4 @@
             </snapshots>
         </repository>
     </repositories>
-
 </project>
